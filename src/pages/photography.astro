@@ -1,0 +1,107 @@
+---
+// To add more photos to the gallery, drop image files into
+// src/assets/gallery/ — every image in that folder shows up here
+// automatically, newest-looking-name last (prefix with numbers to order).
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import PostCard from "../components/PostCard.astro";
+
+const galleryModules = import.meta.glob(
+	"/src/assets/gallery/*.{jpg,jpeg,png,webp}",
+	{ eager: true },
+);
+const images = Object.values(galleryModules).map((mod) => mod.default);
+
+const posts = (
+	await getCollection(
+		"posts",
+		({ data }) => data.category === "photography" && !data.draft,
+	)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout
+	title="Photography"
+	description="Photos from matchdays, portraits, and whatever catches Mikaylin's eye."
+>
+	<section class="section topic-hero topic-photography">
+		<div class="container">
+			<span class="eyebrow">Photography</span>
+			<h1>Through the lens</h1>
+			<p class="lead">
+				Matchday shots, portraits, and anything else worth pointing a camera at.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="section-head">
+				<div>
+					<span class="eyebrow">Gallery</span>
+					<h2>Recent shots</h2>
+				</div>
+			</div>
+			<div class="gallery-grid">
+				{images.map((img) => (
+					<div class="gallery-item">
+						<Image src={img} alt="Photo by Mikaylin Naidoo" width={600} height={600} />
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	{posts.length > 0 && (
+		<section class="section">
+			<div class="container">
+				<div class="section-head">
+					<div>
+						<span class="eyebrow">Behind the shots</span>
+						<h2>Photography posts</h2>
+					</div>
+				</div>
+				<div class="grid grid-3">
+					{posts.map((post) => <PostCard post={post} />)}
+				</div>
+			</div>
+		</section>
+	)}
+</Layout>
+
+<style>
+	.topic-hero {
+		border-bottom: 3px solid var(--ink);
+		padding-block: clamp(2rem, 5vw, 3.5rem);
+	}
+
+	.topic-photography .eyebrow {
+		color: var(--cat-photography);
+	}
+
+	.gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+	}
+
+	.gallery-item {
+		border-radius: var(--radius);
+		overflow: hidden;
+		border: 1px solid var(--line);
+		aspect-ratio: 1 / 1;
+	}
+
+	.gallery-item :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (max-width: 720px) {
+		.gallery-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+</style>

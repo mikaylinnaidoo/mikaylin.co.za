@@ -1,43 +1,44 @@
-# Astro Starter Kit: Minimal
+# mikaylin.co.za
 
-```sh
-npm create astro@latest -- --template minimal
+Mikaylin's personal site — football, photography, and gaming, plus a blog.
+
+## Pages
+
+- `/` — Landing page
+- `/about/` — About
+- `/photography/` — Photography gallery + posts
+- `/football/` — Football stats + posts
+- `/gaming/` — Gaming stats + posts
+- `/blog/` — All blog posts, filterable by category
+
+## Adding a blog post
+
+Create a new Markdown file in `src/content/posts/`, e.g. `src/content/posts/my-new-post.md`:
+
+```md
+---
+title: "Your post title"
+description: "One sentence summary shown on post cards."
+category: "football" # one of: football, photography, gaming, life
+pubDate: 2026-07-10
+---
+
+Write your post here using normal Markdown — paragraphs, **bold**, lists, etc.
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The post automatically shows up on `/blog/` and on its category page (e.g. a `football` post appears on `/football/`), sorted newest first. Set `draft: true` in the frontmatter to hide a post while you're still writing it.
 
-## 🚀 Project Structure
+## Adding a photo to the gallery
 
-Inside of your Astro project, you'll see the following folders and files:
+Drop an image file into `src/assets/gallery/` and it will automatically appear in the gallery on `/photography/`. Prefix filenames with numbers (e.g. `01-`, `02-`) to control the order.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Commands
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+| Command             | Action                                      |
+| :------------------- | :------------------------------------------ |
+| `npm install`        | Install dependencies                        |
+| `npm run dev`        | Start local dev server at `localhost:4321`  |
+| `npm run build`      | Build the production site to `./dist/`      |
+| `npm run preview`    | Preview the production build locally        |
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Full Astro documentation: https://docs.astro.build

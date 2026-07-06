@@ -1,0 +1,93 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import heroPhoto from "../assets/mikaylin-hero.jpg";
+
+const facts = [
+	{ label: "Position", value: "Striker" },
+	{ label: "Favourite team", value: "Add your team" },
+	{ label: "Camera", value: "Add your gear" },
+	{ label: "Currently playing", value: "Add a game" },
+];
+---
+
+<Layout title="About" description="A bit about Mikaylin Naidoo.">
+	<section class="section about-hero">
+		<div class="container about-grid">
+			<div class="about-photo">
+				<Image src={heroPhoto} alt="Mikaylin Naidoo" width={560} height={700} />
+			</div>
+			<div class="about-copy">
+				<span class="eyebrow">About</span>
+				<h1>Hey, I'm Mikaylin.</h1>
+				<div class="divider-block"></div>
+				<p>
+					I'm 16 and split my time between the football pitch, editing photos, and
+					queuing for ranked. This site is where I keep track of all three.
+				</p>
+				<p>
+					On the pitch I play up front and I'm always working on my finishing. Off
+					it, I'm usually got a camera on me trying to get better at capturing
+					action shots and portraits. And when I'm indoors, I'm probably gaming.
+				</p>
+				<p>
+					<em>
+						(This is placeholder bio text — swap it out for your own story any time
+						in <code>src/pages/about.astro</code>.)
+					</em>
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="section-head">
+				<div>
+					<span class="eyebrow">Quick facts</span>
+					<h2>The basics</h2>
+				</div>
+			</div>
+			<div class="grid grid-4">
+				{facts.map((fact) => (
+					<div class="stat">
+						<strong>{fact.value}</strong>
+						{fact.label}
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.about-grid {
+		display: grid;
+		grid-template-columns: 0.8fr 1.2fr;
+		gap: 3rem;
+		align-items: center;
+	}
+
+	.about-photo :global(img) {
+		border-radius: var(--radius);
+		border: 4px solid var(--ink);
+		width: 100%;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+	}
+
+	.about-copy .lead {
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 860px) {
+		.about-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.about-photo {
+			max-width: 320px;
+			margin-inline: auto;
+		}
+	}
+</style>

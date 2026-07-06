@@ -1,0 +1,109 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+
+const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const categories = [
+	{ key: "all", label: "All" },
+	{ key: "football", label: "Football" },
+	{ key: "photography", label: "Photography" },
+	{ key: "gaming", label: "Gaming" },
+	{ key: "life", label: "Life" },
+];
+---
+
+<Layout title="Blog" description="Everything Mikaylin has posted, in one place.">
+	<section class="section blog-hero">
+		<div class="container">
+			<span class="eyebrow">Blog</span>
+			<h1>All posts</h1>
+			<p class="lead">Football, photography, gaming, and life updates — all in one feed.</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="filter-tabs" role="tablist">
+				{categories.map((cat, i) => (
+					<button
+						class="filter-tab"
+						class:list={{ active: i === 0 }}
+						data-filter={cat.key}
+					>
+						{cat.label}
+					</button>
+				))}
+			</div>
+
+			{posts.length > 0 ? (
+				<div class="grid grid-3" id="post-grid">
+					{posts.map((post) => (
+						<div class="post-slot" data-category={post.data.category}>
+							<PostCard post={post} />
+						</div>
+					))}
+				</div>
+			) : (
+				<p>No posts yet — check back soon.</p>
+			)}
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.blog-hero {
+		border-bottom: 3px solid var(--ink);
+		padding-block: clamp(2rem, 5vw, 3.5rem);
+	}
+
+	.filter-tabs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-bottom: 2rem;
+	}
+
+	.filter-tab {
+		font-family: var(--font-display);
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		font-size: 0.85rem;
+		background: var(--surface);
+		border: 2px solid var(--ink);
+		color: var(--ink);
+		border-radius: 999px;
+		padding: 0.5rem 1.1rem;
+		cursor: pointer;
+	}
+
+	.filter-tab.active {
+		background: var(--ink);
+		color: #fff;
+	}
+
+	.post-slot.hidden {
+		display: none;
+	}
+</style>
+
+<script>
+	const tabs = document.querySelectorAll<HTMLButtonElement>(".filter-tab");
+	const slots = document.querySelectorAll<HTMLElement>(".post-slot");
+
+	tabs.forEach((tab) => {
+		tab.addEventListener("click", () => {
+			tabs.forEach((t) => t.classList.remove("active"));
+			tab.classList.add("active");
+
+			const filter = tab.dataset.filter;
+			slots.forEach((slot) => {
+				const matches = filter === "all" || slot.dataset.category === filter;
+				slot.classList.toggle("hidden", !matches);
+			});
+		});
+	});
+</script>

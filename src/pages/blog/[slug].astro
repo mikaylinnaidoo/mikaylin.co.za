@@ -1,0 +1,83 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+	const posts = await getCollection("posts", ({ data }) => !data.draft);
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = post.data.pubDate.toLocaleDateString("en-ZA", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+---
+
+<Layout title={post.data.title} description={post.data.description}>
+	<article class="section post">
+		<div class="container post-container">
+			<a class="back-link" href="/blog/">&larr; All posts</a>
+			<span class={`badge badge-${post.data.category}`}>{post.data.category}</span>
+			<h1>{post.data.title}</h1>
+			<p class="post-date">{formattedDate}</p>
+			<div class="prose">
+				<Content />
+			</div>
+		</div>
+	</article>
+</Layout>
+
+<style>
+	.post-container {
+		max-width: 760px;
+	}
+
+	.back-link {
+		display: inline-block;
+		margin-bottom: 1rem;
+		font-family: var(--font-display);
+		text-transform: uppercase;
+		font-size: 0.85rem;
+		color: var(--ink-soft);
+		text-decoration: none;
+	}
+
+	.back-link:hover {
+		color: var(--ink);
+	}
+
+	h1 {
+		margin-top: 0.75rem;
+	}
+
+	.prose {
+		margin-top: 2rem;
+		font-size: 1.05rem;
+	}
+
+	.prose :global(p) {
+		margin-bottom: 1.2em;
+	}
+
+	.prose :global(h2) {
+		margin-top: 2em;
+	}
+
+	.prose :global(ul),
+	.prose :global(ol) {
+		color: var(--ink-soft);
+		padding-left: 1.4em;
+		margin-bottom: 1.2em;
+	}
+
+	.prose :global(li) {
+		margin-bottom: 0.4em;
+	}
+</style>

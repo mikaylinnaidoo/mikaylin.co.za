@@ -1,0 +1,233 @@
+/* ---------------------------------------------------------------- */
+/* Theme: Bold Sport Editorial                                      */
+/* Light surfaces, confident type, blue + energetic orange accents. */
+/* ---------------------------------------------------------------- */
+
+:root {
+	--ink: #0d1321;
+	--ink-soft: #4a5164;
+	--bg: #f3f4f7;
+	--surface: #ffffff;
+	--line: #e2e4eb;
+
+	--primary: #1447e6;
+	--primary-dark: #0d2fa0;
+	--accent: #ff4d2e;
+
+	--cat-football: #1447e6;
+	--cat-photography: #7c3aed;
+	--cat-gaming: #17a34a;
+	--cat-life: #ff4d2e;
+
+	--font-display: "Anton", "Arial Narrow", sans-serif;
+	--font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+	--container: 1120px;
+	--radius: 14px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: var(--font-body);
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+a {
+	color: inherit;
+}
+
+h1, h2, h3, h4 {
+	font-family: var(--font-display);
+	line-height: 1.05;
+	letter-spacing: 0.01em;
+	text-transform: uppercase;
+	margin: 0 0 0.5em;
+}
+
+h1 { font-size: clamp(2.6rem, 6vw, 5rem); }
+h2 { font-size: clamp(1.8rem, 4vw, 2.75rem); }
+h3 { font-size: clamp(1.3rem, 2.5vw, 1.6rem); }
+
+p {
+	margin: 0 0 1em;
+	color: var(--ink-soft);
+}
+
+.container {
+	width: 100%;
+	max-width: var(--container);
+	margin-inline: auto;
+	padding-inline: 1.5rem;
+}
+
+.section {
+	padding-block: clamp(3rem, 6vw, 5.5rem);
+}
+
+.section-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 2rem;
+	flex-wrap: wrap;
+}
+
+.eyebrow {
+	display: inline-block;
+	font-family: var(--font-display);
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	font-size: 0.8rem;
+	color: var(--primary);
+	margin-bottom: 0.5rem;
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-family: var(--font-display);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	font-size: 0.95rem;
+	padding: 0.85rem 1.6rem;
+	border-radius: 999px;
+	text-decoration: none;
+	border: 2px solid transparent;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover {
+	transform: translateY(-2px);
+}
+
+.btn-primary {
+	background: var(--accent);
+	color: #fff;
+	box-shadow: 0 8px 20px -8px rgba(255, 77, 46, 0.6);
+}
+
+.btn-outline {
+	background: transparent;
+	border-color: var(--ink);
+	color: var(--ink);
+}
+
+.btn-outline:hover {
+	background: var(--ink);
+	color: #fff;
+}
+
+.grid {
+	display: grid;
+	gap: 1.5rem;
+}
+
+.grid-3 {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-2 {
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-4 {
+	grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 860px) {
+	.grid-3,
+	.grid-4 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 600px) {
+	.grid-3,
+	.grid-2,
+	.grid-4 {
+		grid-template-columns: 1fr;
+	}
+}
+
+.card {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	overflow: hidden;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 16px 32px -20px rgba(13, 19, 33, 0.35);
+}
+
+.card-body {
+	padding: 1.5rem;
+}
+
+.badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-family: var(--font-display);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	font-size: 0.75rem;
+	color: #fff;
+	padding: 0.3rem 0.7rem;
+	border-radius: 999px;
+}
+
+.badge-football { background: var(--cat-football); }
+.badge-photography { background: var(--cat-photography); }
+.badge-gaming { background: var(--cat-gaming); }
+.badge-life { background: var(--cat-life); }
+
+.post-date {
+	font-size: 0.85rem;
+	color: var(--ink-soft);
+}
+
+.stat {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 1.5rem;
+	text-align: center;
+}
+
+.stat strong {
+	display: block;
+	font-family: var(--font-display);
+	font-size: 2.25rem;
+	color: var(--primary);
+}
+
+.divider-block {
+	height: 6px;
+	width: 64px;
+	background: var(--accent);
+	border-radius: 999px;
+	margin-bottom: 1rem;
+}

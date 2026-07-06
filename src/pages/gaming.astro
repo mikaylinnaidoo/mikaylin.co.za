@@ -1,0 +1,74 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import PostCard from "../components/PostCard.astro";
+
+// Swap these out for whatever you're actually playing right now.
+const nowPlaying = [
+	{ label: "Currently playing", value: "Add a game" },
+	{ label: "Platform", value: "PC" },
+	{ label: "Rank / progress", value: "Add your rank" },
+	{ label: "Hours this week", value: "0" },
+];
+
+const posts = (
+	await getCollection(
+		"posts",
+		({ data }) => data.category === "gaming" && !data.draft,
+	)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout title="Gaming" description="What Mikaylin is playing, ranking up, and current favourites.">
+	<section class="section topic-hero topic-gaming">
+		<div class="container">
+			<span class="eyebrow">Gaming</span>
+			<h1>Currently grinding</h1>
+			<p class="lead">
+				What I'm playing, rank progress, and setup notes.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="grid grid-4 stats-grid">
+				{nowPlaying.map((stat) => (
+					<div class="stat">
+						<strong>{stat.value}</strong>
+						{stat.label}
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="section-head">
+				<div>
+					<span class="eyebrow">Updates</span>
+					<h2>Gaming posts</h2>
+				</div>
+			</div>
+			{posts.length > 0 ? (
+				<div class="grid grid-3">
+					{posts.map((post) => <PostCard post={post} />)}
+				</div>
+			) : (
+				<p>No gaming posts yet — check back soon.</p>
+			)}
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.topic-hero {
+		border-bottom: 3px solid var(--ink);
+		padding-block: clamp(2rem, 5vw, 3.5rem);
+	}
+
+	.topic-gaming .eyebrow {
+		color: var(--cat-gaming);
+	}
+</style>

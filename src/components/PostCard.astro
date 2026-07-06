@@ -1,0 +1,43 @@
+---
+interface Props {
+	post: {
+		id: string;
+		data: {
+			title: string;
+			description: string;
+			category: "football" | "photography" | "gaming" | "life";
+			pubDate: Date;
+		};
+	};
+}
+
+const { post } = Astro.props;
+const { title, description, category, pubDate } = post.data;
+
+const formattedDate = pubDate.toLocaleDateString("en-ZA", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+---
+
+<a class="card post-card" href={`/blog/${post.id}/`}>
+	<div class="card-body">
+		<span class={`badge badge-${category}`}>{category}</span>
+		<h3>{title}</h3>
+		<p>{description}</p>
+		<span class="post-date">{formattedDate}</span>
+	</div>
+</a>
+
+<style>
+	.post-card {
+		text-decoration: none;
+		color: inherit;
+		display: block;
+	}
+
+	.post-card h3 {
+		margin-block: 0.75rem 0.4rem;
+	}
+</style>

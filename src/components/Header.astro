@@ -1,0 +1,163 @@
+---
+const navItems = [
+	{ href: "/", label: "Home" },
+	{ href: "/about/", label: "About" },
+	{ href: "/photography/", label: "Photography" },
+	{ href: "/football/", label: "Football" },
+	{ href: "/gaming/", label: "Gaming" },
+	{ href: "/blog/", label: "Blog" },
+];
+
+const path = Astro.url.pathname;
+const isActive = (href) =>
+	href === "/" ? path === "/" : path.startsWith(href);
+---
+
+<header class="site-header">
+	<div class="container header-inner">
+		<a class="logo" href="/">
+			Mika<span>ylin</span>
+		</a>
+		<nav aria-label="Main navigation">
+			<button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">
+				<span></span>
+			</button>
+			<ul id="nav-list">
+				{navItems.map((item) => (
+					<li>
+						<a href={item.href} class:list={{ active: isActive(item.href) }}>
+							{item.label}
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: var(--surface);
+		border-bottom: 3px solid var(--ink);
+	}
+
+	.header-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-block: 1.1rem;
+	}
+
+	.logo {
+		font-family: var(--font-display);
+		font-size: 1.5rem;
+		text-transform: uppercase;
+		text-decoration: none;
+		color: var(--ink);
+		letter-spacing: 0.02em;
+	}
+
+	.logo span {
+		color: var(--accent);
+	}
+
+	nav ul {
+		list-style: none;
+		display: flex;
+		gap: 1.75rem;
+		margin: 0;
+		padding: 0;
+	}
+
+	nav a {
+		text-decoration: none;
+		font-family: var(--font-display);
+		text-transform: uppercase;
+		font-size: 0.9rem;
+		letter-spacing: 0.03em;
+		color: var(--ink-soft);
+		padding-bottom: 0.3rem;
+		border-bottom: 3px solid transparent;
+	}
+
+	nav a:hover,
+	nav a.active {
+		color: var(--ink);
+		border-bottom-color: var(--accent);
+	}
+
+	.nav-toggle {
+		display: none;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5rem;
+	}
+
+	.nav-toggle span,
+	.nav-toggle span::before,
+	.nav-toggle span::after {
+		display: block;
+		width: 24px;
+		height: 3px;
+		background: var(--ink);
+		border-radius: 2px;
+		position: relative;
+	}
+
+	.nav-toggle span::before,
+	.nav-toggle span::after {
+		content: "";
+		position: absolute;
+	}
+
+	.nav-toggle span::before {
+		top: -7px;
+	}
+
+	.nav-toggle span::after {
+		top: 7px;
+	}
+
+	@media (max-width: 720px) {
+		.nav-toggle {
+			display: block;
+		}
+
+		nav ul {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			background: var(--surface);
+			border-bottom: 3px solid var(--ink);
+			flex-direction: column;
+			gap: 0;
+			padding: 0.5rem 1.5rem 1rem;
+			display: none;
+		}
+
+		nav ul.open {
+			display: flex;
+		}
+
+		nav a {
+			display: block;
+			padding-block: 0.7rem;
+		}
+	}
+</style>
+
+<script>
+	const toggle = document.querySelector(".nav-toggle");
+	const list = document.querySelector("#nav-list");
+
+	toggle?.addEventListener("click", () => {
+		const expanded = toggle.getAttribute("aria-expanded") === "true";
+		toggle.setAttribute("aria-expanded", String(!expanded));
+		list?.classList.toggle("open");
+	});
+</script>

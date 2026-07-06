@@ -1,0 +1,77 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import PostCard from "../components/PostCard.astro";
+
+// Swap these out for your real season stats whenever you like.
+const stats = [
+	{ label: "Appearances", value: "0" },
+	{ label: "Goals", value: "0" },
+	{ label: "Assists", value: "0" },
+	{ label: "Position", value: "Striker" },
+];
+
+const posts = (
+	await getCollection(
+		"posts",
+		({ data }) => data.category === "football" && !data.draft,
+	)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout
+	title="Football"
+	description="Match reports, highlights, and life on the pitch."
+>
+	<section class="section topic-hero topic-football">
+		<div class="container">
+			<span class="eyebrow">Football</span>
+			<h1>On the pitch</h1>
+			<p class="lead">
+				Match reports, season progress, and highlights from every game.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="grid grid-4 stats-grid">
+				{stats.map((stat) => (
+					<div class="stat">
+						<strong>{stat.value}</strong>
+						{stat.label}
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="section-head">
+				<div>
+					<span class="eyebrow">Write-ups</span>
+					<h2>Football posts</h2>
+				</div>
+			</div>
+			{posts.length > 0 ? (
+				<div class="grid grid-3">
+					{posts.map((post) => <PostCard post={post} />)}
+				</div>
+			) : (
+				<p>No football posts yet — check back soon.</p>
+			)}
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.topic-hero {
+		border-bottom: 3px solid var(--ink);
+		padding-block: clamp(2rem, 5vw, 3.5rem);
+	}
+
+	.topic-football .eyebrow {
+		color: var(--cat-football);
+	}
+</style>
